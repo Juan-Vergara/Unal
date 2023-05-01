@@ -1,0 +1,547 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        int n;
+        Scanner sc = new Scanner(System.in);
+        Sia sia = new Sia();
+        n = sc.nextInt();
+        Separador separador = new Separador();
+        int c = 0;
+        
+        while (sc.hasNextLine()){
+            boolean flag = true;
+            
+            String nombre = sc.nextLine();
+            nombre = leerLinea(nombre, sc);
+            flag = rol(nombre);
+            
+            if (flag == true){           
+                c++;
+            
+                String documento = sc.nextLine();
+                documento = leerLinea(documento, sc);
+
+                String condicion = sc.nextLine();
+                condicion = leerLinea(condicion, sc);
+
+                String peama =  sc.nextLine();
+                peama = leerLinea(peama, sc);
+                
+                String doble_t = sc.nextLine();
+                doble_t = leerLinea(doble_t, sc);
+                
+                String traslado = sc.nextLine();
+                traslado = leerLinea(traslado, sc);
+
+                String reingreso = sc.nextLine();
+                reingreso = leerLinea(reingreso, sc);
+
+                String porcentaje = sc.nextLine();
+                porcentaje = leerLinea(porcentaje, sc);
+
+                String encuesta = sc.nextLine();
+                encuesta = leerLinea(encuesta, sc);
+
+                String pappi = sc.nextLine();
+                pappi = leerLinea(pappi, sc);
+
+                //System.out.println(porcentaje);
+                //System.out.println(flag);
+                //imprimir(nombre,documento,condicion,peama,doble_t,traslado,reingreso,porcentaje,encuesta,pappi);
+                    
+                String v_doble = separador.Separador_doble(doble_t);
+                    
+                if (v_doble.equals("Si")){
+                    String e_nombre = separador.Separador_str(nombre);
+                    int v_documento = separador.Separador_doc(documento);
+                    String v_condicion = separador.Separador_str(condicion);
+                    String v_peama = separador.Separador_str(peama);
+                    String v_fecha = separador.Separador_fecha(doble_t);
+                    String v_traslado = separador.Separador_str(traslado);
+                    String v_reingreso = separador.Separador_str(reingreso);
+                    double v_porcentaje = separador.Separador_poc(porcentaje);
+                    String v_encuesta = separador.Separador_str(encuesta);
+                    double v_pappi = separador.Separador_pappi(pappi);
+                        
+                    Estudiante persona = new Estudiante(e_nombre, v_documento, v_condicion, v_peama, v_doble, v_fecha, v_traslado, v_reingreso, v_porcentaje, v_encuesta, v_pappi);
+                        
+                    sia.setEstudiantes(persona);
+                    //System.out.println(v_fecha);
+                    //System.out.println(persona.getPuntuacion());
+                }
+                    
+                else{
+                    String e_nombre = separador.Separador_str(nombre);
+                    int v_documento = separador.Separador_doc(documento);
+                    String v_condicion = separador.Separador_str(condicion);
+                    String v_peama = separador.Separador_str(peama);
+                    String v_traslado = separador.Separador_str(traslado);
+                    String v_reingreso = separador.Separador_str(reingreso);
+                    double v_porcentaje = separador.Separador_poc(porcentaje);
+                    String v_encuesta = separador.Separador_str(encuesta);
+                    double v_pappi = separador.Separador_pappi(pappi);
+                        
+                    Estudiante persona = new Estudiante(e_nombre, v_documento, v_condicion, v_peama, v_doble, v_traslado, v_reingreso, v_porcentaje, v_encuesta, v_pappi);
+                        
+                    sia.setEstudiantes(persona);
+                    //System.out.println(e_nombre);
+                    //System.out.println(persona.getPuntuacion());
+                }
+            }
+        }
+        
+        sia.getCitas();
+    }
+    
+    public static String leerLinea(String linea, Scanner sc){
+        while (linea.isEmpty()){
+            linea = sc.nextLine();
+        }
+        return linea;
+    }
+    
+    public static void imprimir(String a, String b, String c, String d, String f, String g, String h, String j, String k, String l){
+        
+    }
+    
+    public static String separar(String cadena, boolean flag){
+        int primero = cadena.indexOf(":") + 2;
+        int ultimo = cadena.indexOf(",");
+        String respuesta = cadena.substring(primero, ultimo);
+        
+        return respuesta;
+    }
+    
+    public static boolean rol(String cadena){
+        int ultimo = cadena.indexOf(':');
+        String respuesta = cadena.substring(0, ultimo);
+        
+        return respuesta.equalsIgnoreCase("Estudiante");
+    }
+    
+    public static boolean verDoble(String cadena, boolean flag){
+        int primero = cadena.indexOf(":") + 2;
+        String respuesta = cadena.substring(primero, primero + 2);
+        
+        if(!respuesta.equalsIgnoreCase("Si") && !respuesta.equalsIgnoreCase("No"))
+            flag = false;
+        
+        return flag;
+    }
+    
+    public static boolean verValor_str(String valor, boolean flag){
+        int primero = valor.indexOf(":") + 2;
+        int ultimo = valor.indexOf(",");
+        String respuesta = valor.substring(primero, ultimo);
+        
+        if(!respuesta.equalsIgnoreCase("Si") && !respuesta.equalsIgnoreCase("No"))
+            flag = false;
+        
+        return flag;
+    }
+    
+    public static boolean verPorcentaje(String porcentaje, boolean flag){
+        
+       int primero = porcentaje.indexOf(":") + 2;
+       int ultimo = porcentaje.indexOf("%");
+       int respuesta = Integer.parseInt(porcentaje.substring(primero, ultimo));
+        
+        if(respuesta < 0 || respuesta > 100)
+            flag = false;
+        
+        return flag;
+    }
+    
+    public static boolean verDocumento(String documento, boolean flag){
+        int primero = documento.indexOf(":") + 2;
+        int ultimo = documento.indexOf(",");
+        int respuesta = Integer.parseInt(documento.substring(primero, ultimo));
+        
+        if(respuesta < 0)
+            flag = false; 
+        
+        return flag;
+    }
+    
+    public static boolean verPappi(String pappi, boolean flag){
+        int inicio = pappi.indexOf(":") + 2;
+        
+        double respuesta = Double.parseDouble(pappi.substring(inicio));
+        
+        if(respuesta < 0 || respuesta > 5)
+            flag = false;
+        
+        return flag;
+    }    
+    
+}
+
+class Separador{
+    
+    public String Separador_str(String cadena){
+        int primero = cadena.indexOf(":") +2;
+        int ultimo = cadena.indexOf(",");
+        
+        String resultado = cadena.substring(primero, ultimo);
+        
+        return resultado;
+    }
+    
+    public int Separador_doc(String documento){
+        int primero = documento.indexOf(":") + 2;
+        int ultimo = documento.indexOf(",");
+        int respuesta = Integer.parseInt(documento.substring(primero, ultimo));
+    
+        return respuesta;
+    }
+    
+    public String Separador_doble(String cadena){
+        int primero = cadena.indexOf(":") + 2;
+        String respuesta = cadena.substring(primero, primero + 2);
+    
+        return respuesta;
+    }
+        
+    public String Separador_fecha(String cadena){
+        int referencia = cadena.indexOf(":") + 2;
+        int primero = cadena.indexOf(":", referencia) + 2;
+        int ultimo = cadena.indexOf(",");
+        String fecha = cadena.substring(primero, ultimo);
+        
+    
+        return fecha;
+    }
+    
+    public double Separador_poc(String cadena){
+        int primero = cadena.indexOf(":") + 2;
+        int ultimo = cadena.indexOf(",");
+        String nueva_cadena = cadena.substring(primero, ultimo).replaceAll("%","");
+        
+        double porcentaje = Double.parseDouble(nueva_cadena);
+    
+        return porcentaje;
+    }
+    
+    public double Separador_pappi(String cadena){
+        int primero = cadena.indexOf(":") + 2;
+        
+        double pappi = Double.parseDouble(cadena.substring(primero));
+        
+        return pappi;
+    }
+}
+
+
+
+class Estudiante {
+    private String nombre, condicion, peama, doble_t, traslado, reingreso, encuesta, fecha;
+    private int documento;
+    private double pappi, puntuacion, avance;
+    private boolean flag;
+    private int[] condiciones;
+    
+    
+    public Estudiante(String nombre, int documento, String condicion, String peama, String doble_t, String traslado, String reingreso, double avance, String encuesta, double pappi){
+        this.nombre = nombre;
+        this.documento = documento;
+        this.condicion = condicion;
+        this.peama = peama;
+        this.doble_t = doble_t;
+        this.traslado = traslado;
+        this.avance = avance;
+        this.reingreso = reingreso;
+        this.encuesta = encuesta;
+        this.pappi = pappi;
+    }
+    
+        public Estudiante(String nombre, int documento, String condicion, String peama, String doble_t, String fecha, String traslado, String reingreso, double avance, String encuesta, double pappi){
+        this.nombre = nombre;
+        this.documento = documento;
+        this.condicion = condicion;
+        this.peama = peama;
+        this.doble_t = doble_t;
+        this.fecha = fecha;
+        this.traslado = traslado;
+        this.avance = avance;
+        this.reingreso = reingreso;
+        this.encuesta = encuesta;
+        this.pappi = pappi;
+    }
+    
+    public boolean Verfechas(){
+        int primero = 0;
+        int final1 = fecha.indexOf("/");
+        int segundo = final1 + 1;
+        int final2 = fecha.indexOf("/", segundo);
+        int tercera = final2 + 1;
+
+        int dia = Integer.parseInt(fecha.substring(primero, final1));
+        int mes = Integer.parseInt(fecha.substring(segundo, final2));
+        int year = Integer.parseInt(fecha.substring(tercera));
+        
+        //System.out.println(dia + "/" + mes + "/" + year);
+        
+        if ((dia < 1 || dia > 31)|| (mes < 1 || mes > 7) || year != 2023){
+            return false;
+        }
+        
+        
+        return true;
+        
+    }
+    
+    public double getPointCondicion(){
+        if (condicion.equalsIgnoreCase("Si"))
+            return 45 * 56.25;
+        
+        
+        return 0;
+    }
+    
+    public double getPointPeama(){
+        if (peama.equalsIgnoreCase("Si"))
+            return 10 * 12.5;
+        
+        
+        return 0;
+    }
+    
+    
+    public double getPointDoble(){
+        if (doble_t.equalsIgnoreCase("Si"))
+            if (Verfechas())
+                return 6 * 12.5;
+            else
+                return 0;
+        
+        return 0;
+    }
+    
+    public double getPointTraslado(){
+        if (traslado.equalsIgnoreCase("Si"))
+            return 6 * 12.5;
+        
+        
+        return 0;
+    }
+    
+    public double getPointReingreso(){
+        if (reingreso.equalsIgnoreCase("Si"))
+            return 6 * 12.5;
+        
+        
+        return 0;
+    }
+    
+    public double getPointAvance(){
+        if (avance >= 70)
+            return 5 * 4;
+        
+         
+        return 0;
+    }
+        
+    public double getPointEncuesta(){
+       if (encuesta.equalsIgnoreCase("Si"))
+           return 2 * 2.25;
+        
+       
+       return 0;
+       
+    }
+    
+    public double getPointPappi(){
+        return getPappi() * 1.25;
+
+    }
+    
+    
+    public double getPuntuacion(){
+        puntuacion = getPointCondicion() + getPointPeama() + getPointDoble() + getPointTraslado() + getPointReingreso() + getPointEncuesta() + getPointAvance() + getPointPappi();
+        
+        
+        return puntuacion;
+    }
+    
+    public double getPappi(){
+        return pappi;
+    }
+    
+    public String getNombre(){
+        return nombre;
+    }
+    
+    public int getDocumento(){
+        return documento;
+    }
+    
+    public double getAvance(){
+        return avance;
+    }
+    
+    public String getPeama(){
+        return peama;
+    }
+    
+    public String getTraslado(){
+        return traslado;
+    }
+    
+    public String getCondicion(){
+        return condicion;
+    }
+    
+    public String getDoble(){
+        return doble_t;
+    }
+    
+    
+    public String getReingreso(){
+        return reingreso;
+    }
+    
+    public String getEncuesta(){
+        return encuesta;
+    }
+    
+    public void imprimir(){
+        System.out.println("Esta es la condicion: " + getCondicion()+" y su puntuacion es: "+getPointCondicion());
+        System.out.println("Este es el peama: " + getPeama()+" y su puntuacion es: "+getPointPeama());
+        System.out.println("Esta es la doble titulacion: " + getDoble()+" y su puntuacion es: "+getPointDoble());
+        System.out.println("Este es el traslado: " + getTraslado()+" y su puntuacion es: "+getPointTraslado());
+        System.out.println("Este es el reingreso: " + getReingreso()+" y su puntuacion es: "+getPointReingreso());
+        System.out.println("Este es el avance: " + getAvance()+" y su puntuacion es: "+getPointAvance());
+        System.out.println("Esta es la encuesta: " + getEncuesta()+" y su puntuacion es: "+getPointEncuesta());
+        System.out.println("Este es el pappi: " + getPappi());
+        System.out.println("Este es el puntaje total: " + getPuntuacion());
+    }
+    
+}
+
+class Sia{
+    ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+    
+    public void setEstudiantes(Estudiante persona){
+        estudiantes.add(persona);
+    }
+    
+    public void ordenarPuntaje(){
+        int size = estudiantes.size();
+        
+        for (int i = 0; i < size - 1; i++){
+            Estudiante estudiante1 = estudiantes.get(i);
+            for (int j = i + 1; j < size; j++){
+                Estudiante estudiante2 = estudiantes.get(j);
+                if (estudiante1.getPuntuacion() < estudiante2.getPuntuacion()){
+                    Estudiante temporal = estudiante1;
+                    estudiantes.set(i, estudiante2);
+                    estudiantes.set(j, temporal);
+                    estudiante1 = estudiantes.get(i);
+                }
+            }
+        }
+    }  
+    
+    public void getCitas(){
+        int size = estudiantes.size();
+        Tiempo orden = new Tiempo(size);
+        orden.setHorarios();
+        ordenarPuntaje();
+        ArrayList<Turno> horarios = new ArrayList<Turno>();
+        
+        horarios = orden.getHorarios();
+        
+        for (int i = 0; i < size; i++){
+            Estudiante persona = estudiantes.get(i);
+            Turno turno = horarios.get(i);
+
+            System.out.println("Cita para"+" "+persona.getNombre()+" cc "+persona.getDocumento()+" el dia "+turno.getDia()+"/3/2023"+" a las "+turno.getHora()+":"+turno.getMinuto()+":00 horas");
+            
+            //persona.imprimir();
+        }
+    }   
+}
+
+class Turno{
+    String minuto, hora, dia;
+    
+    public void setMinuto(String minuto){
+        this.minuto = minuto;
+    }
+    
+    public void setHora(String hora){
+        this.hora = hora;
+    }
+    
+    public void setDia(String dia){
+        this.dia = dia;
+    }
+    
+    public String getMinuto(){return minuto;}
+    public String getHora(){return hora;}
+    public String getDia(){return dia;}
+}
+
+
+class Tiempo{
+    int turnos;
+    String[] minuto = {"00", "45", "30", "15"};
+    String[] hora = {"07", "08", "09", "10", "11", "12", "01", "02", "03", "04"};
+    String[] dia = {"22", "23", "24"};
+    ArrayList<Turno> horarios = new ArrayList<Turno>();
+    
+    public Tiempo(int turnos){
+        this.turnos = turnos;
+    }
+    
+    public void setHorarios(){
+    int ajendados = 0;
+    int i = 0;
+    int j = 0;
+    int n = 0;
+
+    while (ajendados != turnos){
+        
+      Turno turnoNuevo = new Turno();
+      turnoNuevo.setMinuto(minuto[i]);
+
+      if (minuto[i].equals("00") || minuto[i].equals("45")){
+          turnoNuevo.setHora(hora[j]);
+      }
+
+      else{
+        j++;
+        turnoNuevo.setHora(hora[j]);
+      }
+
+      turnoNuevo.setDia(dia[n]);
+
+      if (i == 3){
+        i = 0;
+        j ++;
+      }
+
+      else{
+        i++;
+      }
+
+      if (hora[j].equals("04")){
+        n++;
+        i = 0;
+        j = 0;
+      }
+        
+      horarios.add(turnoNuevo);
+      ajendados ++;
+    }
+  }
+    
+    public ArrayList<Turno> getHorarios(){
+        return horarios;
+    }
+}
